@@ -15,7 +15,7 @@
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- Add support for values injection -->
-	<context:property-placeholder location="file:db-settings.properties"/>
+	<context:property-placeholder location="db-settings.properties"/>
 
 	<!-- Add support for component scanning -->
 	<context:component-scan base-package="com.murtll.springdemo" />

@@ -17,30 +17,69 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public List<Customer> getCustomers() {
-        return customerDAO.getCustomers();
+
+        List<Customer> result;
+        try {
+            result = customerDAO.getCustomers();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return getCustomers();
+        }
+
+        return result;
     }
 
     @Override
     @Transactional
     public void saveCustomer(Customer customer) {
-        customerDAO.saveCustomer(customer);
+
+        try {
+            customerDAO.saveCustomer(customer);
+        } catch (Exception e) {
+            e.printStackTrace();
+            saveCustomer(customer);
+        }
     }
 
     @Override
     @Transactional
     public void deleteCustomerById(int id) {
-        customerDAO.deleteCustomerById(id);
+
+        try {
+            customerDAO.deleteCustomerById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            deleteCustomerById(id);
+        }
     }
 
     @Override
     @Transactional
     public Customer getCustomerById(int id) {
-        return customerDAO.getCustomerById(id);
+
+        Customer result;
+
+        try {
+            result = customerDAO.getCustomerById(id);
+        } catch (Exception e) {
+            return getCustomerById(id);
+        }
+
+        return result;
     }
 
     @Override
     @Transactional
     public List<Customer> getMatchingCustomers(String search) {
-        return customerDAO.getMatchingCustomers(search);
+
+        List<Customer> result;
+
+        try {
+            result = customerDAO.getMatchingCustomers(search);
+        } catch (Exception e) {
+            return getMatchingCustomers(search);
+        }
+
+        return result;
     }
 }

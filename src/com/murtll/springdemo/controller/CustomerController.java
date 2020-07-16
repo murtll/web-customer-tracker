@@ -21,23 +21,17 @@ public class CustomerController {
     @GetMapping("/list")
     public String showList(Model model, @RequestParam(name = "search", defaultValue = "") String search) {
 
-        try {
-            //        get customers
-            List<Customer> customers;
-//        add data to model
+        List<Customer> customers;
 
-            if (search == null || search.equals("")) {
-                customers = customerService.getCustomers();
-            } else {
-                customers = customerService.getMatchingCustomers(search);
-            }
-
-            model.addAttribute("customers", customers);
-            return "customers";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/customer/list";
+        if (search == null || search.equals("")) {
+            customers = customerService.getCustomers();
+        } else {
+            customers = customerService.getMatchingCustomers(search);
         }
+
+        model.addAttribute("customers", customers);
+        return "customers";
+
     }
 
     @GetMapping("/add")

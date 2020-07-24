@@ -39,6 +39,10 @@
                         <c:param name="id" value="${customer.id}"/>
                     </c:url>
 
+                    <c:url var="sendEmailUrl" value="/customer/send-mail">
+                        <c:param name="id" value="${customer.id}"/>
+                    </c:url>
+
                     <tr>
                         <td> ${customer.firstName} </td>
                         <td> ${customer.lastName} </td>
@@ -47,6 +51,8 @@
                             <a href="${deleteUrl}" onclick="if (!(confirm('Are you sure you wanna delete this man?'))) return false">Delete</a>
                             |
                             <a href="${pageContext.request.contextPath}/customer/update?id=${customer.id}">Update</a>
+                            |
+                            <a href="${sendEmailUrl}">Send email</a>
                         </td>
                     </tr>
                 </c:forEach>

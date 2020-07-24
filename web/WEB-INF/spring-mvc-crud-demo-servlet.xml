@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<context:property-placeholder location="db-settings.properties"/>
+	<context:property-placeholder location="application.properties"/>
 
 	<!-- Add support for component scanning -->
 	<context:component-scan base-package="com.murtll.springdemo" />
@@ -42,7 +42,22 @@
         <property name="maxPoolSize" value="20" />
         <property name="maxIdleTime" value="30000" />
 	</bean>
-	
+
+	<bean id="myMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${gmail.auth}</prop>
+				<prop key="mail.transport.protocol">${gmail.protocol}</prop>
+				<prop key="mail.smtp.starttls.enable">${gmail.starttls.enable}</prop>
+				<prop key="mail.debug">${gmail.debug}</prop>
+			</props>
+		</property>
+		<property name="host" value="${gmail.host}"/>
+		<property name="port" value="${gmail.port}"/>
+		<property name="username" value="${gmail.user}"/>
+		<property name="password" value="${gmail.pass}"/>
+	</bean>
+
     <!-- Step 2: Setup Hibernate session factory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
@@ -66,7 +81,7 @@
 	<tx:annotation-driven transaction-manager="myTransactionManager" />
 
 	<!-- Add support for getting resources -->
-	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
 
 </beans>
 

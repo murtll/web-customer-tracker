@@ -3,6 +3,7 @@ package com.murtll.springdemo.controller;
 import com.murtll.springdemo.entity.Customer;
 import com.murtll.springdemo.service.CustomerService;
 import com.murtll.springdemo.service.EmailService;
+import com.murtll.springdemo.utils.EmailModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
@@ -90,13 +91,19 @@ public class CustomerController {
 
 //        create message
 
+        EmailModel mailModel = new EmailModel();
+        mailModel.setFrom("esskeetiter@gmail.com");
+        mailModel.setTo(customer.getEmail());
+
+/*
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("MailSender");
         message.setTo(customer.getEmail());
+*/
 
 //        add customer and message to model
         model.addAttribute("customer", customer);
-        model.addAttribute("message", message);
+        model.addAttribute("mailModel", mailModel);
 
 //        return view
         return "mail-form";
@@ -104,9 +111,16 @@ public class CustomerController {
     }
 
     @PostMapping("/send-mail")
-    public String sendMessage(@ModelAttribute("message") SimpleMailMessage message) {
+    public String sendMessage(Model model, @ModelAttribute("mailModel") EmailModel emailModel) {
 
-        emailService.sendSimpleMessage(message);
+        System.out.println("from: " + emailModel.getFrom());
+        System.out.println("to: " + emailModel.getTo());
+        System.out.println("subj: " + emailModel.getSubject());
+        System.out.println("text: " + emailModel.getText());
+
+        if (!emailService.sendMimeMessage(emailModel)) {
+            return "error";
+        }
 
         return "redirect:/customer/list";
 

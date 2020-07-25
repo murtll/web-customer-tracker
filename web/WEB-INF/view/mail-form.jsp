@@ -21,7 +21,9 @@
 
     New message to ${customer.firstName} ${customer.lastName}, ${customer.email}<br>
 
-    <form:form action="send-mail" modelAttribute="message" method="POST">
+
+
+    <form:form action="send-mail" modelAttribute="mailModel" method="POST">
 
         <form:hidden path="from"/>
         <form:hidden path="to"/>
@@ -31,7 +33,7 @@
         Message:
         <br>
         <br>
-        <form:textarea path="text" rows="30" cols="200" />
+        <form:textarea path="text" rows="15" cols="100" />
         <br>
         <input type="submit" value="Send" class="save" />
 

@@ -10,8 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 @Controller
@@ -110,16 +114,39 @@ public class CustomerController {
 
     }
 
-    @PostMapping("/send-mail")
-    public String sendMessage(Model model, @ModelAttribute("mailModel") EmailModel emailModel) {
+    @PostMapping(value = "/send-mail", headers = "content-type=multipart/*")
+    public String sendMessage(Model model,
+                              @ModelAttribute("mailModel") EmailModel emailModel,
+                              @RequestParam("file") MultipartFile file) {
 
-        System.out.println("from: " + emailModel.getFrom());
-        System.out.println("to: " + emailModel.getTo());
-        System.out.println("subj: " + emailModel.getSubject());
-        System.out.println("text: " + emailModel.getText());
+        if (file != null)
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
 
-        if (!emailService.sendMimeMessage(emailModel)) {
-            return "error";
+                String name = file.getOriginalFilename();
+
+                File uploadedFile = new File(name);
+
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadedFile));
+
+                stream.write(bytes);
+                stream.flush();
+                stream.close();
+
+                if (!emailService.sendMimeMessage(emailModel, uploadedFile)) {
+                    return "error";
+                }
+
+                uploadedFile.delete();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (!emailService.sendMimeMessage(emailModel)) {
+                return "error";
+            }
         }
 
         return "redirect:/customer/list";

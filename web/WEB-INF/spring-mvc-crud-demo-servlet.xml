@@ -14,6 +14,7 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<!-- Add support for properties retrieving -->
 	<context:property-placeholder location="application.properties"/>
 
 	<!-- Add support for component scanning -->
@@ -43,6 +44,7 @@
         <property name="maxIdleTime" value="300000" />
 	</bean>
 
+	<!-- Add support for sending emails -->
 	<bean id="myMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="javaMailProperties">
 			<props>
@@ -69,7 +71,13 @@
 		      <prop key="hibernate.show_sql">true</prop>
 		   </props>
 		</property>
-   </bean>	  
+   </bean>
+
+	<!-- Add support for file uploading -->
+	<bean id="multipartResolver"
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="200000" />
+	</bean>
 
     <!-- Step 3: Setup Hibernate transaction manager -->
 	<bean id="myTransactionManager"

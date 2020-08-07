@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Customers</title>
+    <title>Error 500</title>
 
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
 
@@ -17,8 +17,12 @@
     <div id="container">
         <div id="content">
 
-            <h3>An error occured!</h3>
-
+            <h3>Some server error occurred. Please try to refresh the page.</h3>
+            <br>
+            <br>
+            <p>
+                <a href="${pageContext.request.contextPath}/customer/list">&#8592 Go to the main page</a>
+            </p>
         </div>
     </div>
 </div>

@@ -5,7 +5,6 @@ import com.murtll.springdemo.service.CustomerService;
 import com.murtll.springdemo.service.EmailService;
 import com.murtll.springdemo.utils.EmailModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -135,7 +134,7 @@ public class CustomerController {
                 stream.close();
 
                 if (!emailService.sendMimeMessage(emailModel, uploadedFile)) {
-                    return "error";
+                    return "error-404";
                 }
 
                 uploadedFile.delete();
@@ -145,7 +144,7 @@ public class CustomerController {
             }
         } else {
             if (!emailService.sendMimeMessage(emailModel)) {
-                return "error";
+                return "error-404";
             }
         }
 
